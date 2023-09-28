@@ -1,0 +1,13 @@
+.label {
+  display: block;
+}
+
+.input {
+  font-size: 18px;
+  border: none;
+  border-bottom: 1px solid #1565c0;
+}
+
+.input:focus {
+  outline: 1px solid #1565c0;
+}

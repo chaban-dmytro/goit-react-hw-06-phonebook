@@ -1,0 +1,11 @@
+.items {
+  list-style: none;
+}
+
+.item {
+  padding: 10px 0;
+}
+
+.item span {
+  padding: 0 10px;
+}
