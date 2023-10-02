@@ -1,26 +1,14 @@
-import { useState, useEffect } from 'react';
 import AddContact from './AddContact/AddContact';
 import ContactList from './ContactList/ContactList';
 import Filter from './Filter/Filter';
 
+import { useSelector, useDispatch } from 'react-redux';
+import { add, remove, addFilter } from '../redux/slice.js';
+
 const App = () => {
-  const [contacts, setContacts] = useState([]);
-  const [filter, setFilter] = useState('');
-
-  useEffect(() => {
-    const item = JSON.parse(localStorage.getItem('contacts'));
-    if (item) {
-      setContacts(item);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (contacts.length > 0) {
-      localStorage.setItem('contacts', JSON.stringify(contacts));
-    } else {
-      localStorage.removeItem('contacts');
-    }
-  }, [contacts]);
+  const contacts = useSelector(state => state.contacts.contacts);
+  const filter = useSelector(state => state.contacts.filter);
+  const dispath = useDispatch();
 
   function onAddNewContact(values) {
     if (
@@ -32,7 +20,7 @@ const App = () => {
       alert(`${values.name} is already in contacts!`);
       return;
     } else {
-      setContacts([...contacts, values]);
+      dispath(add(values));
     }
   }
 
@@ -44,11 +32,11 @@ const App = () => {
   }
 
   function onFilterInputChange(event) {
-    setFilter(event.target.value);
+    dispath(addFilter(event.target.value));
   }
 
   function onDeleteContact(id) {
-    setContacts(contacts.filter(contact => contact.id !== id));
+    dispath(remove(id));
   }
 
   return (
