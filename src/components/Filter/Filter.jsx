@@ -1,9 +1,17 @@
 import React from 'react';
 import css from './Filter.module.css';
-import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
+import { addFilter } from '../../redux/slice';
 
-const Filter = ({ onFilterInputChange, array }) => {
-  if (array.length === 0) {
+const Filter = () => {
+  const contacts = useSelector(state => state.contacts.contacts);
+  const dispath = useDispatch();
+
+  function onFilterInputChange(event) {
+    dispath(addFilter(event.target.value));
+  }
+
+  if (contacts.length === 0) {
     return;
   } else {
     return (
@@ -21,11 +29,6 @@ const Filter = ({ onFilterInputChange, array }) => {
       </>
     );
   }
-};
-
-Filter.propTypes = {
-  onFilterInputChange: PropTypes.func,
-  array: PropTypes.array,
 };
 
 export default Filter;

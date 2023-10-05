@@ -4,9 +4,27 @@ import * as Yup from 'yup';
 import { nanoid } from 'nanoid';
 import { Button } from '@mui/material';
 import css from './AddContact.module.css';
-import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
+import { add } from '../../redux/slice';
 
-const AddContact = ({ onAddNewContact }) => {
+const AddContact = () => {
+  const contacts = useSelector(state => state.contacts.contacts);
+  const dispath = useDispatch();
+
+  function onAddNewContact(values) {
+    if (
+      contacts.some(
+        contact =>
+          contact.name.toLowerCase().trim() === values.name.toLowerCase().trim()
+      )
+    ) {
+      alert(`${values.name} is already in contacts!`);
+      return;
+    } else {
+      dispath(add(values));
+    }
+  }
+
   const validationSchema = Yup.object().shape({
     name: Yup.string()
       .min(3, 'Your name must be more than 3 symbols!')
@@ -50,10 +68,6 @@ const AddContact = ({ onAddNewContact }) => {
       </Form>
     </Formik>
   );
-};
-
-AddContact.propTypes = {
-  onAddNewContact: PropTypes.func,
 };
 
 export default AddContact;
